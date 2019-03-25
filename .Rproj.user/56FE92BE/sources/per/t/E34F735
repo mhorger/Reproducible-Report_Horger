@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1553525857961.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2470636675",
+    "id" : "E34F735",
+    "lastKnownWriteTime" : 1553544311,
+    "last_content_update" : 1553544311875,
+    "path" : "~/GitHub/Reproducible-Report_Horger/Repro Spano et al 2018.Rmd",
+    "project_path" : "Repro Spano et al 2018.Rmd",
+    "properties" : {
+        "cursorPosition" : "24,0",
+        "last_setup_crc32" : "BDCE742Fbb338d19",
+        "scrollLine" : "17",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

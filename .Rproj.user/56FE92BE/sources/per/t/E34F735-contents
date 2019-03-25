@@ -1,0 +1,27 @@
+---
+title: "Repro Spano et al 2018"
+author: "mhorger"
+date: "March 25, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+General summary of the article: 
+- naps are beneficial for learning in typically developing infants, children, and adults. 
+- individuals with Down syndrome have a high rate of disordered sleep than seen in the typical populaiton. Do they experience the same benefits of sleep on learning? 
+- Methods - 
+Assess retention of new words with various intervals between training and test. Children receive all conditions 1-2 weeks apart
+1. after a 5 min delay
+2. after a nap (4 hour delay)
+3. after 24 hours 
+- Planned analysis - 
+The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions. The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. THese were conducted for the 4 and 24 hour delay. 
+
+
+```{r}
+
+```
+
