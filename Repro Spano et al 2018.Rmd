@@ -28,9 +28,7 @@ The first analysis conducted was a repeated measures ANOVA for both wake and nap
 
 ```{r}
 
-ChangeinRec1 <- c(as.numeric(unlist(Spano_et_al[,11])))
-                  
-                  ,
+ChangeinRec <- c(as.numeric(unlist(Spano_et_al[,11])),
          as.numeric(unlist(Spano_et_al[,12])),
          as.numeric(unlist(Spano_et_al[,13])),
          as.numeric(unlist(Spano_et_al[,14]))
@@ -92,5 +90,61 @@ knitr::kable(xtable(summary_out_4HRS))
 summary_out_24HRS <- summary(ANOVA24)
 library(xtable)
 knitr::kable(xtable(summary_out_24HRS))
+```
+##Table of means 
+```{r}
+overall_means <- FigureItOut %>%
+                  group_by(Grouping, Timing) %>%
+                  summarise(meanNTC = mean(NumToCriterion),
+                            SEMNTC = (sd(NumToCriterion)/sqrt(length(NumToCriterion))))
+
+
+overall_means<- data.frame(overall_means)
+
+# make a table of overall means
+knitr::kable(overall_means)
+```
+
+
+
+## Reproducing the figure 
+
+I will focus on the figure that depicts Repetitions required to meet criterion 
+
+```{r}
+NumToCriterion<- c(as.numeric(unlist(Spano_et_al[,7])),
+         as.numeric(unlist(Spano_et_al[,8])),
+         as.numeric(unlist(Spano_et_al[,9]))
+         )
+Timing<- rep(c("Immediate", "Wake", "Sleep"), each = 49)
+
+Subs <- rep(c(seq(1:49)), 3)
+Subs<- as.factor(Subs)
+
+Grouping<-
+  rep(c("DS"), 25)
+Grouping<-
+  c(Grouping, rep(c("TD"), 24))
+Grouping<- 
+  c(rep(Grouping, 3))
+
+FigureItOut <- data.frame(Subs, Grouping, Timing, NumToCriterion)
+
+
+ggplot(overall_means, aes(x=Timing,
+                          y= meanNTC, 
+                          group=Grouping,
+                          fill=Grouping))+
+  geom_bar( 
+    stat="identity",
+    position="dodge")+
+  theme_classic(base_size=12)+
+  ylab("Repetition required to meet criterion")+
+  geom_errorbar( aes(ymin=meanNTC-SEMNTC,
+                    ymax=meanNTC+SEMNTC),
+                position=position_dodge(width=0.9),
+                width=.2,
+                color="black")+
+  coord_cartesian(ylim=c(0.0, 2.5))
 ```
 

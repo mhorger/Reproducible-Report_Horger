@@ -1,0 +1,7 @@
+"0","overall_means <- FigureItOut %>%"
+"0","                  group_by(Grouping, Timing) %>%"
+"0","                  summarise(meanNTC = mean(NumToCriterion),"
+"0","                            SEMNTC = (sd(NumToCriterion)/sqrt(length(NumToCriterion))))"
+"0","overall_means<- data.frame(overall_means)"
+"0","# make a table of overall means"
+"0","knitr::kable(overall_means)"
