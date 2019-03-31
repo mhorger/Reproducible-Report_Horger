@@ -28,9 +28,7 @@ The first analysis conducted was a repeated measures ANOVA for both wake and nap
 
 ```{r}
 
-ChangeinRec1 <- c(as.numeric(unlist(Spano_et_al[,11])))
-                  
-                  ,
+ChangeinRec <- c(as.numeric(unlist(Spano_et_al[,11])),
          as.numeric(unlist(Spano_et_al[,12])),
          as.numeric(unlist(Spano_et_al[,13])),
          as.numeric(unlist(Spano_et_al[,14]))
@@ -92,5 +90,39 @@ knitr::kable(xtable(summary_out_4HRS))
 summary_out_24HRS <- summary(ANOVA24)
 library(xtable)
 knitr::kable(xtable(summary_out_24HRS))
+```
+
+
+
+## Reproducing the figure 
+
+I will focus on the figure that depicts Repetitions required to meet criterion 
+
+```{r}
+NumToCriterion<- c(as.numeric(unlist(Spano_et_al[,7])),
+         as.numeric(unlist(Spano_et_al[,8])),
+         as.numeric(unlist(Spano_et_al[,9]))
+         )
+Timing<- rep(c("Immediate", "4 hours", "24 hours"), each = 49)
+
+Subs <- rep(c(seq(1:49)), 3)
+Subs<- as.factor(Subs)
+
+FigureItOut <- data.frame()
+
+
+ggplot(Spano, aes(x=Delay,
+                          y=ChangeinRec, 
+                          group=Condition,
+                          fill=Group))+
+  geom_bar(stat="identity",position="dodge")+
+  theme_classic(base_size=12)+
+  ylab("Mean Reaction Time (ms)")+
+  geom_errorbar(aes(ymin=meanRT-SEMRT,
+                    ymax=meanRT+SEMRT),
+                position=position_dodge(width=0.9),
+                width=.2,
+                color="black")+
+  coord_cartesian(ylim=c(750,1000))
 ```
 
