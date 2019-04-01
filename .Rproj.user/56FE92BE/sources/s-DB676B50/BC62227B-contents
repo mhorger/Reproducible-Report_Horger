@@ -22,21 +22,7 @@ authornote: |
   This is a reproduction of an article published on October 20, 2018. 
 
 abstract: |
-  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
-  
-  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
-  
-  One sentence clearly stating the **general problem** being addressed by  this particular study.
-  
-  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
-  
-  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
-  
-  One or two sentences to put the results into a more **general context**.
-  
-  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
-  
-  <!-- https://tinyurl.com/ybremelq -->
+ Naps are beneficial for learning in typically developing infants, children, and adults. They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning? 
   
 keywords          : "naps", "sleep", "memory", "development", "Down syndrome"
 
@@ -70,20 +56,38 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 
 # Methods
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+
 
 ## Participants
 
-## Material
+```{r}
 
-## Procedure
+Groups<- c( "DS", "TD")
+N <- c(25, 24)
+Mean_age <- c(9.49, 5.03)
+PercentFemale <- c(52, 54)
 
-Assess retention of new words with various intervals between training and test. Children receive all conditions 1-2 weeks apart
+demos<- data.frame(Groups, N, Mean_age, PercentFemale)
+library(xtable)
+knitr::kable(xtable(demos))
+
+```
+
+
+## Materials & Procedure 
+
+![Methods](C:\Users\mhorger\Documents\GitHub\Reproducible-Report_Horger)
+
+
+
+The goal of this study was to assess the retention of new words with various intervals between training and test. Children received all conditions 1-2 weeks apart. The conditions included:
 1. after a 5 min delay
 2. after a nap (4 hour delay)
 3. after 24 hours
 
 ## Data analysis
+The authors assessed the number of trials needed to reach criterion across conditions and groups. 
+
 The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions. The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay.
 
 The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay. 
@@ -93,6 +97,116 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 
 
 # Results
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# load libraries and data
+library(data.table)
+library(dplyr)
+library(ggplot2)
+
+#pre-processing for Figure 
+NumToCriterion<- c(as.numeric(unlist(Spano_et_al[,7])),
+         as.numeric(unlist(Spano_et_al[,8])),
+         as.numeric(unlist(Spano_et_al[,9]))
+         )
+Timing<- rep(c("Immediate", "Wake", "Sleep"), each = 49)
+
+Subs <- rep(c(seq(1:49)), 3)
+Subs<- as.factor(Subs)
+
+Grouping<-
+  rep(c("DS"), 25)
+Grouping<-
+  c(Grouping, rep(c("TD"), 24))
+Grouping<- 
+  c(rep(Grouping, 3))
+
+FigureItOut <- data.frame(Subs, Grouping, Timing, NumToCriterion)
+
+
+#pre-processing for ANOVA
+ChangeinRec <- c(as.numeric(unlist(Spano_et_al[,11])),
+         as.numeric(unlist(Spano_et_al[,12])),
+         as.numeric(unlist(Spano_et_al[,13])),
+         as.numeric(unlist(Spano_et_al[,14]))
+         )
+
+Group <- 
+  rep(c("DS"), 25)
+Group<-
+  c(Group, rep(c("TD"), 24))
+Group<- 
+  c(rep(Group, 4))
+
+Subjects <- rep(seq(1:49), 4) 
+
+Condition <- 
+  rep(rep(c("WAKE", "SLEEP"), each = 49), 2)
+
+Delay <- 
+  rep(c(4, 24), each = 9)
+
+Spano <- data.frame(Subjects, Group, Condition, Delay, ChangeinRec)
+
+#Table of means 
+overall_means <- FigureItOut %>%
+                  group_by(Grouping, Timing) %>%
+                  summarise(meanNTC = mean(NumToCriterion),
+                            SEMNTC = (sd(NumToCriterion)/sqrt(length(NumToCriterion))))
+
+
+overall_means<- data.frame(overall_means)
+knitr::kable(overall_means)
+
+
+
+
+```
+
+```{r NumberToCriterion, fig.cap="Average number of trials to criterion per group per condition."}
+# make and print the figure
+
+
+#making the figure 
+ggplot(overall_means, aes(x=Timing,
+                          y= meanNTC, 
+                          group=Grouping,
+                          fill=Grouping))+
+  geom_bar( 
+    stat="identity",
+    position="dodge")+
+  theme_classic(base_size=12)+
+  ylab("Repetition required to meet criterion")+
+  geom_errorbar( aes(ymin=meanNTC-SEMNTC,
+                    ymax=meanNTC+SEMNTC),
+                position=position_dodge(width=0.9),
+                width=.2,
+                color="black")+
+  coord_cartesian(ylim=c(0.0, 2.5))
+```
+
+
+
+```{r aovtable, results="asis"}
+
+##ANOVA 
+
+Spano$Subjects<- factor(Spano$Subjects)
+
+class(Spano$Subjects)
+
+ANOVA1<- aov(ChangeinRec~Condition + Error(Subjects/(Condition)), Spano)
+summary(ANOVA1)
+
+apa_aov <- apa_print(summary(ANOVA1))
+
+
+
+apa_table(
+  apa_aov$table
+  , caption = "Repeated measures ANOVA table for sleep and wake conditions"
+)
+```
 
 # Discussion
 

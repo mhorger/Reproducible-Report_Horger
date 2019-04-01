@@ -6,8 +6,11 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE, eval = FALSE)
 ```
+
+
+
 
 ## Introduction 
 General summary of the article: 
@@ -22,11 +25,25 @@ Assess retention of new words with various intervals between training and test. 
 - Planned analysis - 
 The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions. The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay. 
 
+
 ## Re-analysis 
+
+### Participants 
+```{r}
+Groups<- c( "DS", "TD")
+N <- c(25, 24)
+Mean_age <- c(9.49, 5.03)
+PercentFemale <- c(52, 54)
+
+demos<- data.frame(Groups, N, Mean_age, PercentFemale)
+library(xtable)
+knitr::kable(xtable(demos))
+```
+
 
 ### Pre-processing and conversion to long format 
 
-```{r}
+```{r, eval=FALSE}
 
 ChangeinRec <- c(as.numeric(unlist(Spano_et_al[,11])),
          as.numeric(unlist(Spano_et_al[,12])),
@@ -47,7 +64,7 @@ Condition <-
   rep(rep(c("WAKE", "SLEEP"), each = 49), 2)
 
 Delay <- 
-  rep(c(4, 24), each = 9)
+  rep(c(4, 24), each = 98)
 
 Spano <- data.frame(Subjects, Group, Condition, Delay, ChangeinRec)
 
@@ -135,7 +152,7 @@ ggplot(overall_means, aes(x=Timing,
                           y= meanNTC, 
                           group=Grouping,
                           fill=Grouping))+
-  geom_bar( 
+  geom_bar( col=brewer.pal(n = 6, name = "RdBu"),
     stat="identity",
     position="dodge")+
   theme_classic(base_size=12)+
@@ -146,5 +163,7 @@ ggplot(overall_means, aes(x=Timing,
                 width=.2,
                 color="black")+
   coord_cartesian(ylim=c(0.0, 2.5))
+
+
 ```
 

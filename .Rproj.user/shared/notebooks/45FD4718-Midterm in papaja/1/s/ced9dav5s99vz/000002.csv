@@ -1,0 +1,31 @@
+"0","Groups<- c( ""DS"", ""TD"")
+"
+"2","Warning messages:
+"
+"2","1: "
+"2","In get(x, envir = ns) :"
+"2"," restarting interrupted promise evaluation
+"
+"2","2: "
+"2","In get(x, envir = ns) :"
+"2"," restarting interrupted promise evaluation
+"
+"2","3: "
+"2","In get(x, envir = ns) :"
+"2"," restarting interrupted promise evaluation
+"
+"2","4: "
+"2","In get(x, envir = ns) :"
+"2"," restarting interrupted promise evaluation
+"
+"2","5: "
+"2","In get(x, envir = ns) :"
+"2"," restarting interrupted promise evaluation
+"
+"2","6: "
+"2","In get(x, envir = ns) :"
+"2"," restarting interrupted promise evaluation
+"
+"0","N <- c(25, 24)"
+"0","Mean_age <- c(9.49, 5.03)"
+"0","PercentFemale <- c(52, 54)"

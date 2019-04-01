@@ -199,13 +199,142 @@ $(document).ready(function () {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>General summary of the article: - naps are beneficial for learning in typically developing infants, children, and adults. - individuals with Down syndrome have a high rate of disordered sleep than seen in the typical populaiton. Do they experience the same benefits of sleep on learning? - Methods - Assess retention of new words with various intervals between training and test. Children receive all conditions 1-2 weeks apart 1. after a 5 min delay 2. after a nap (4 hour delay) 3. after 24 hours - Planned analysis - The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions. The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. THese were conducted for the 4 and 24 hour delay.</p>
+<p>General summary of the article: - naps are beneficial for learning in typically developing infants, children, and adults. - individuals with Down syndrome have a high rate of disordered sleep than seen in the typical populaiton. Do they experience the same benefits of sleep on learning?</p>
+<ul>
+<li>Methods - Assess retention of new words with various intervals between training and test. Children receive all conditions 1-2 weeks apart</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>after a 5 min delay</li>
+<li>after a nap (4 hour delay)</li>
+<li>after 24 hours</li>
+</ol>
+<ul>
+<li>Planned analysis - The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions. The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay.</li>
+</ul>
 </div>
 <div id="re-analysis" class="section level2">
 <h2>Re-analysis</h2>
+<div id="participants" class="section level3">
+<h3>Participants</h3>
+<pre class="r"><code>Groups&lt;- c( &quot;DS&quot;, &quot;TD&quot;)
+N &lt;- c(25, 24)
+Mean_age &lt;- c(9.49, 5.03)
+PercentFemale &lt;- c(52, 54)
+
+demos&lt;- data.frame(Groups, N, Mean_age, PercentFemale)
+library(xtable)
+knitr::kable(xtable(demos))</code></pre>
+</div>
 <div id="pre-processing-and-conversion-to-long-format" class="section level3">
 <h3>Pre-processing and conversion to long format</h3>
+<pre class="r"><code>ChangeinRec &lt;- c(as.numeric(unlist(Spano_et_al[,11])),
+         as.numeric(unlist(Spano_et_al[,12])),
+         as.numeric(unlist(Spano_et_al[,13])),
+         as.numeric(unlist(Spano_et_al[,14]))
+         )
+
+Group &lt;- 
+  rep(c(&quot;DS&quot;), 25)
+Group&lt;-
+  c(Group, rep(c(&quot;TD&quot;), 24))
+Group&lt;- 
+  c(rep(Group, 4))
+
+Subjects &lt;- rep(seq(1:49), 4) 
+
+Condition &lt;- 
+  rep(rep(c(&quot;WAKE&quot;, &quot;SLEEP&quot;), each = 49), 2)
+
+Delay &lt;- 
+  rep(c(4, 24), each = 98)
+
+Spano &lt;- data.frame(Subjects, Group, Condition, Delay, ChangeinRec)</code></pre>
 </div>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<p>The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions.</p>
+<pre class="r"><code>Spano$Subjects&lt;- factor(Spano$Subjects)
+
+class(Spano$Subjects)
+
+ANOVA1&lt;- aov(ChangeinRec~Condition + Error(Subjects/(Condition)), Spano)
+summary(ANOVA1)</code></pre>
+<p>The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay.</p>
+<pre class="r"><code>Change4hr &lt;- ChangeinRec[1:98]
+Change24hr &lt;- ChangeinRec[99:196]
+GroupPerHr &lt;- Group[1:98]
+CondPerHr &lt;- Condition[1:98]
+
+TwentyFourHrDelay&lt;- data.frame(Subjects,GroupPerHr, CondPerHr, Change24hr)
+
+FourHrDelay &lt;- data.frame(Subjects,GroupPerHr, CondPerHr, Change4hr)
+
+ANOVA24&lt;- aov(Change24hr~GroupPerHr*CondPerHr + Error(Subjects/(CondPerHr)), TwentyFourHrDelay) 
+summary(ANOVA24)
+
+ANOVA4 &lt;-  aov(Change4hr~GroupPerHr*CondPerHr + Error(Subjects/(CondPerHr)), FourHrDelay) 
+summary(ANOVA4)
+
+summary_out_4HRS &lt;- summary(ANOVA4)
+library(xtable)
+knitr::kable(xtable(summary_out_4HRS))
+
+
+summary_out_24HRS &lt;- summary(ANOVA24)
+library(xtable)
+knitr::kable(xtable(summary_out_24HRS))</code></pre>
+</div>
+<div id="table-of-means" class="section level2">
+<h2>Table of means</h2>
+<pre class="r"><code>overall_means &lt;- FigureItOut %&gt;%
+                  group_by(Grouping, Timing) %&gt;%
+                  summarise(meanNTC = mean(NumToCriterion),
+                            SEMNTC = (sd(NumToCriterion)/sqrt(length(NumToCriterion))))
+
+
+overall_means&lt;- data.frame(overall_means)
+
+# make a table of overall means
+knitr::kable(overall_means)</code></pre>
+</div>
+<div id="reproducing-the-figure" class="section level2">
+<h2>Reproducing the figure</h2>
+<p>I will focus on the figure that depicts Repetitions required to meet criterion</p>
+<pre class="r"><code>NumToCriterion&lt;- c(as.numeric(unlist(Spano_et_al[,7])),
+         as.numeric(unlist(Spano_et_al[,8])),
+         as.numeric(unlist(Spano_et_al[,9]))
+         )
+Timing&lt;- rep(c(&quot;Immediate&quot;, &quot;Wake&quot;, &quot;Sleep&quot;), each = 49)
+
+Subs &lt;- rep(c(seq(1:49)), 3)
+Subs&lt;- as.factor(Subs)
+
+Grouping&lt;-
+  rep(c(&quot;DS&quot;), 25)
+Grouping&lt;-
+  c(Grouping, rep(c(&quot;TD&quot;), 24))
+Grouping&lt;- 
+  c(rep(Grouping, 3))
+
+FigureItOut &lt;- data.frame(Subs, Grouping, Timing, NumToCriterion)
+
+
+ggplot(overall_means, aes(x=Timing,
+                          y= meanNTC, 
+                          group=Grouping,
+                          fill=Grouping))+
+  geom_bar( col=brewer.pal(n = 6, name = &quot;RdBu&quot;),
+    stat=&quot;identity&quot;,
+    position=&quot;dodge&quot;)+
+  theme_classic(base_size=12)+
+  ylab(&quot;Repetition required to meet criterion&quot;)+
+  geom_errorbar( aes(ymin=meanNTC-SEMNTC,
+                    ymax=meanNTC+SEMNTC),
+                position=position_dodge(width=0.9),
+                width=.2,
+                color=&quot;black&quot;)+
+  coord_cartesian(ylim=c(0.0, 2.5))</code></pre>
 </div>
 
 
