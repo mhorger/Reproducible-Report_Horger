@@ -1,6 +1,0 @@
-"0","apa_print(summary(ANOVA1))
-"
-"2","non-unique value when setting 'row.names': ‘Intercept’"
-"2","Error in `.rowNamesDF<-`(x, value = value) : 
-  duplicate 'row.names' are not allowed
-"

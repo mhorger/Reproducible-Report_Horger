@@ -77,8 +77,18 @@ Spano$Subjects<- factor(Spano$Subjects)
 
 class(Spano$Subjects)
 
-ANOVA1<- aov(ChangeinRec~Condition + Error(Subjects/(Condition)), Spano)
+sum_df<- Spano %>%
+          group_by(Subjects,Condition) %>%
+          summarise(mCR =mean(ChangeinRec))
+
+ANOVA1<- aov(mCR~Condition + Error(Subjects/(Condition)), sum_df)
 summary(ANOVA1)
+
+apa_aov <- apa_print(summary(ANOVA1))
+apa_table(
+  apa_aov$table
+  , caption = "ANOVA table for Experiment 1"
+)
 ```
 
 The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay. 

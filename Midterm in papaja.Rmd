@@ -22,7 +22,7 @@ authornote: |
   This is a reproduction of an article published on October 20, 2018. 
 
 abstract: |
-  Naps are beneficial for learning in typically developing infants, children, and adults. They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning?
+  Naps are beneficial for learning in typically developing infants, children, and adults. They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning? The current experiment suggests they do not. While typically developing preschoolers showed more retention after a period filled with sleep, children with Down syndrome had greater retention after a period of wakefulness. 
  
   <!-- https://tinyurl.com/ybremelq -->
   
@@ -32,7 +32,7 @@ wordcount         : "X"
 
 bibliography      : ["r-references.bib"]
 
-floatsintext      : no
+floatsintext      : yes
 figurelist        : no
 tablelist         : no
 footnotelist      : no
@@ -169,7 +169,7 @@ knitr::kable(overall_means)
 
 ```
 
-```{r NumberToCriterion, fig.cap="Average number of trials to criterion per group per condition."}
+```{r NumberToCriterion, fig.cap="Average number of trials to criterion per group per condition.", fig.width=4, fig.height=4}
 # make and print the figure
 
 
@@ -201,8 +201,20 @@ Spano$Subjects<- factor(Spano$Subjects)
 
 class(Spano$Subjects)
 
-ANOVA1<- aov(ChangeinRec~Condition + Error(Subjects/(Condition)), Spano)
+
+
+sum_df<- Spano %>%
+          group_by(Subjects,Condition) %>%
+          summarise(mCR =mean(ChangeinRec))
+
+ANOVA1<- aov(mCR~Condition + Error(Subjects/(Condition)), sum_df)
 summary(ANOVA1)
+
+apa_aov <- apa_print(summary(ANOVA1))
+apa_table(
+  apa_aov$table
+  , caption = "ANOVA table for Experiment 1"
+)
 
 
 ```

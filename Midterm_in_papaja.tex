@@ -1,4 +1,4 @@
-\documentclass[man]{apa6}
+\documentclass[man,floatsintext]{apa6}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -94,12 +94,6 @@ Gomez\textsuperscript{1,3}}
 \newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
 
 
-\DeclareDelayedFloatFlavor{ThreePartTable}{table}
-\DeclareDelayedFloatFlavor{lltable}{table}
-\DeclareDelayedFloatFlavor*{longtable}{table}
-\makeatletter
-\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
-\makeatother
 \usepackage{lineno}
 
 \linenumbers
@@ -118,7 +112,10 @@ children, and adults. They show greater retention when a delay between
 training and test contains sleep then when it is a comparable period of
 wake. However, individuals with Down syndrome have a high rate of
 disordered sleep than seen in the typical population. Do they experience
-the same benefits of sleep on learning?
+the same benefits of sleep on learning? The current experiment suggests
+they do not. While typically developing preschoolers showed more
+retention after a period filled with sleep, children with Down syndrome
+had greater retention after a period of wakefulness.
 
 
 }
@@ -208,13 +205,25 @@ per group per condition.}
 {[}1{]} \enquote{factor}
 
 Error: Subjects Df Sum Sq Mean Sq F value Pr(\textgreater{}F) Residuals
-48 4.412 0.09192
+48 2.206 0.04596
 
 Error: Subjects:Condition Df Sum Sq Mean Sq F value Pr(\textgreater{}F)
-Condition 1 0.014 0.01372 0.049 0.825 Residuals 48 13.348 0.27808
+Condition 1 0.007 0.00686 0.049 0.825 Residuals 48 6.674 0.13904
 
-Error: Within Df Sum Sq Mean Sq F value Pr(\textgreater{}F) Residuals 98
-4.568 0.04661
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:aovtable}ANOVA table for Experiment 1}
+\begin{tabular}{lllllll}
+\toprule
+Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\
+\midrule
+Condition & 0.05 & 1 & 48 & 0.14 & .825 & .001\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
 
 \section{Discussion}\label{discussion}
 
