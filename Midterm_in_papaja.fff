@@ -1,0 +1,15 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{C:/Users/mhorger/Documents/GitHub/Reproducible-Report_Horger/methods.PNG}
+\caption{Methods}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{Midterm_in_papaja_files/figure-latex/NumberToCriterion-1.pdf}
+\caption{\label{fig:NumberToCriterion}Average number of trials to criterion
+per group per condition.}
+\end{figure*}

@@ -22,13 +22,11 @@ authornote: |
   This is a reproduction of an article published on October 20, 2018. 
 
 abstract: |
-  Naps are beneficial for learning in typically developing infants, children, and adults. 
- They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. 
- However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning? 
+  Naps are beneficial for learning in typically developing infants, children, and adults. They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning?
  
   <!-- https://tinyurl.com/ybremelq -->
   
-keywords          : "naps", "sleep", "memory", "development", "Down syndrome"
+keywords          : "naps, sleep, memory, development, Down syndrome"
 
 wordcount         : "X"
 
@@ -62,6 +60,7 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 # Methods
 
 
+
 ## Participants
 
 ```{r}
@@ -80,7 +79,7 @@ knitr::kable(xtable(demos))
 
 ## Materials & Procedure 
 
-![Methods](C:\Users\mhorger\Documents\GitHub\Reproducible-Report_Horger)
+![Methods](C:\Users\mhorger\Documents\GitHub\Reproducible-Report_Horger\methods.PNG)
 
 
 
@@ -107,6 +106,7 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 library(data.table)
 library(dplyr)
 library(ggplot2)
+library(readxl)
 
 Spano_et_al <- read_excel("Spano et al.xlsx")
 
@@ -204,14 +204,7 @@ class(Spano$Subjects)
 ANOVA1<- aov(ChangeinRec~Condition + Error(Subjects/(Condition)), Spano)
 summary(ANOVA1)
 
-apa_aov <- apa_print(summary(ANOVA1))
 
-rownames(apa_aov) = make.names(nams, unique=TRUE)
-
-apa_table(
-  apa_aov$table
-  , caption = "Repeated measures ANOVA table for sleep and wake conditions"
-)
 ```
 
 # Discussion
