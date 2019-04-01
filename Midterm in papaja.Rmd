@@ -22,7 +22,11 @@ authornote: |
   This is a reproduction of an article published on October 20, 2018. 
 
 abstract: |
- Naps are beneficial for learning in typically developing infants, children, and adults. They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning? 
+  Naps are beneficial for learning in typically developing infants, children, and adults. 
+ They show greater retention when a delay between training and test contains sleep then when it is a comparable period of wake. 
+ However, individuals with Down syndrome have a high rate of disordered sleep than seen in the typical population. Do they experience the same benefits of sleep on learning? 
+ 
+  <!-- https://tinyurl.com/ybremelq -->
   
 keywords          : "naps", "sleep", "memory", "development", "Down syndrome"
 
@@ -104,6 +108,8 @@ library(data.table)
 library(dplyr)
 library(ggplot2)
 
+Spano_et_al <- read_excel("Spano et al.xlsx")
+
 #pre-processing for Figure 
 NumToCriterion<- c(as.numeric(unlist(Spano_et_al[,7])),
          as.numeric(unlist(Spano_et_al[,8])),
@@ -144,7 +150,7 @@ Condition <-
   rep(rep(c("WAKE", "SLEEP"), each = 49), 2)
 
 Delay <- 
-  rep(c(4, 24), each = 9)
+  rep(c(4, 24), each = 98)
 
 Spano <- data.frame(Subjects, Group, Condition, Delay, ChangeinRec)
 
@@ -200,7 +206,7 @@ summary(ANOVA1)
 
 apa_aov <- apa_print(summary(ANOVA1))
 
-
+rownames(apa_aov) = make.names(nams, unique=TRUE)
 
 apa_table(
   apa_aov$table

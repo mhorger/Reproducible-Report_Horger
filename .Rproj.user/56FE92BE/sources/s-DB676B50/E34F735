@@ -5,7 +5,7 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "12|0|31|0|\n",
-    "hash" : "2339162970",
+    "hash" : "0",
     "id" : "E34F735",
     "lastKnownWriteTime" : 1554079934,
     "last_content_update" : 1554079934996,
@@ -13,7 +13,7 @@
     "project_path" : "Repro Spano et al 2018.Rmd",
     "properties" : {
         "cursorPosition" : "10,0",
-        "last_setup_crc32" : "DB676B50bb338d19",
+        "last_setup_crc32" : "",
         "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
