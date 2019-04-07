@@ -227,7 +227,6 @@ sim_power <- function(x){
   return(novaresults[[1]][["Pr(>F)"]][1])
 }
 
-sim_power(x)
 
 #Repeat and save p values 
 
