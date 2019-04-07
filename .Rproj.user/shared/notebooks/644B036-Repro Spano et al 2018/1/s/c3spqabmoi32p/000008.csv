@@ -1,0 +1,79 @@
+"0","apa_anova4 <- apa_print(summary(ANOVA4))
+apa_table(
+  apa_anova4$table
+  , caption = ""ANOVA table for 4 hour delay""
+)
+"
+"1","
+
+"
+"1","\begin{table}"
+"1","[tbp]"
+"1","
+\begin{center}
+\begin{"
+"1","threeparttable"
+"1","}"
+"1","
+\caption{"
+"1","ANOVA table for 4 hour delay"
+"1","}"
+"1","
+\begin{tabular}{lllllll}
+\toprule
+Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\
+\midrule
+GroupPerHr & 8.55 & 1 & 190 & 0.07 & .004 & .043\\
+CondPerHr & 81.33 & 1 & 190 & 0.07 & < .001 & .300\\
+GroupPerHr $\times$ CondPerHr & 77.15 & 1 & 190 & 0.07 & < .001 & .289\\
+\bottomrule
+\end{tabular}"
+"1","
+\end{"
+"1","threeparttable"
+"1","}
+\end{center}"
+"1","
+\end{table}"
+"1","
+
+"
+"0","apa_anova24 <- apa_print(summary(ANOVA24))"
+"0","apa_table("
+"0","  apa_anova24$table"
+"0","  , caption = ""ANOVA table for 24 hour delay"""
+"0",")"
+"1","
+
+"
+"1","\begin{table}"
+"1","[tbp]"
+"1","
+\begin{center}
+\begin{"
+"1","threeparttable"
+"1","}"
+"1","
+\caption{"
+"1","ANOVA table for 24 hour delay"
+"1","}"
+"1","
+\begin{tabular}{lllllll}
+\toprule
+Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\
+\midrule
+GroupPerHr & 2.33 & 1 & 190 & 0.07 & .129 & .012\\
+CondPerHr & 33.35 & 1 & 190 & 0.07 & < .001 & .149\\
+GroupPerHr $\times$ CondPerHr & 21.03 & 1 & 190 & 0.07 & < .001 & .100\\
+\bottomrule
+\end{tabular}"
+"1","
+\end{"
+"1","threeparttable"
+"1","}
+\end{center}"
+"1","
+\end{table}"
+"1","
+
+"

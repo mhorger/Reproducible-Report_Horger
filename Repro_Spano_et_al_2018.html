@@ -253,14 +253,24 @@ Spano &lt;- data.frame(Subjects, Group, Condition, Delay, ChangeinRec)</code></p
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
-<p>The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions.</p>
+<p>The first analysis conducted was a repeated measures ANOVA to determine if there was a difference in baseline performance across wake and nap conditions.</p>
 <pre class="r"><code>Spano$Subjects&lt;- factor(Spano$Subjects)
 
 class(Spano$Subjects)
 
-ANOVA1&lt;- aov(ChangeinRec~Condition + Error(Subjects/(Condition)), Spano)
-summary(ANOVA1)</code></pre>
-<p>The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay.</p>
+sum_df&lt;- Spano %&gt;%
+          group_by(Subjects,Condition) %&gt;%
+          summarise(mCR =mean(ChangeinRec))
+
+ANOVA1&lt;- aov(mCR~Condition + Error(Subjects/(Condition)), sum_df)
+summary(ANOVA1)
+
+apa_aov &lt;- apa_print(summary(ANOVA1))
+apa_table(
+  apa_aov$table
+  , caption = &quot;ANOVA table for Experiment 1&quot;
+)</code></pre>
+<p>The second were two 2x2 ANOVAs with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay.</p>
 <pre class="r"><code>Change4hr &lt;- ChangeinRec[1:98]
 Change24hr &lt;- ChangeinRec[99:196]
 GroupPerHr &lt;- Group[1:98]
@@ -276,14 +286,17 @@ summary(ANOVA24)
 ANOVA4 &lt;-  aov(Change4hr~GroupPerHr*CondPerHr + Error(Subjects/(CondPerHr)), FourHrDelay) 
 summary(ANOVA4)
 
-summary_out_4HRS &lt;- summary(ANOVA4)
-library(xtable)
-knitr::kable(xtable(summary_out_4HRS))
+apa_anova4 &lt;- apa_print(summary(ANOVA4))
+apa_table(
+  apa_anova4$table
+  , caption = &quot;ANOVA table for 4 hour delay&quot;
+)
 
-
-summary_out_24HRS &lt;- summary(ANOVA24)
-library(xtable)
-knitr::kable(xtable(summary_out_24HRS))</code></pre>
+apa_anova24 &lt;- apa_print(summary(ANOVA24))
+apa_table(
+  apa_anova24$table
+  , caption = &quot;ANOVA table for 24 hour delay&quot;
+)</code></pre>
 </div>
 <div id="table-of-means" class="section level2">
 <h2>Table of means</h2>

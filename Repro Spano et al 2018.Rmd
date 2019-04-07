@@ -71,7 +71,7 @@ Spano <- data.frame(Subjects, Group, Condition, Delay, ChangeinRec)
 ```
 
 ##Analysis 
-The first analysis conducted was a repeated measures ANOVA for both wake and nap conditions.
+The first analysis conducted was a repeated measures ANOVA to determine if there was a difference in baseline performance across wake and nap conditions.
 ```{r}
 Spano$Subjects<- factor(Spano$Subjects)
 
@@ -91,7 +91,7 @@ apa_table(
 )
 ```
 
-The second was a 2x2 ANOVA with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay. 
+The second were two 2x2 ANOVAs with delay type as the repeated factor and TD or DS as the between. These were conducted for the 4 and 24 hour delay. 
 
 ```{r}
 Change4hr <- ChangeinRec[1:98]
@@ -109,14 +109,17 @@ summary(ANOVA24)
 ANOVA4 <-  aov(Change4hr~GroupPerHr*CondPerHr + Error(Subjects/(CondPerHr)), FourHrDelay) 
 summary(ANOVA4)
 
-summary_out_4HRS <- summary(ANOVA4)
-library(xtable)
-knitr::kable(xtable(summary_out_4HRS))
+apa_anova4 <- apa_print(summary(ANOVA4))
+apa_table(
+  apa_anova4$table
+  , caption = "ANOVA table for 4 hour delay"
+)
 
-
-summary_out_24HRS <- summary(ANOVA24)
-library(xtable)
-knitr::kable(xtable(summary_out_24HRS))
+apa_anova24 <- apa_print(summary(ANOVA24))
+apa_table(
+  apa_anova24$table
+  , caption = "ANOVA table for 24 hour delay"
+)
 ```
 ##Table of means 
 ```{r}
@@ -174,6 +177,79 @@ ggplot(overall_means, aes(x=Timing,
                 color="black")+
   coord_cartesian(ylim=c(0.0, 2.5))
 
+
+```
+
+
+Set the properties of each sample including N, mean, SD, kind of distribution 
+
+Round our sample up to N = 25 in each group 
+Mean will be mean change in recognition at 24 hours 
+Limit the first analysis to only those in the SLEEP condition 
+
+meanTDWake = -0.36791667
+sdTDWake = 0.2439040
+
+meanDSWake = -0.15120000
+sdDSWake = 0.3158961
+
+meanTDSleep = -0.09083333
+sdTDSleep = 0.2309447
+
+meanDSSleep = -0.46160000
+sdDSSleep = 0.2580093
+
+normal distribution 
+```{r}
+#Power analysis
+
+#Set the properties of each sample including N, mean, SD, kind of distribution 
+
+meanSD <- TwentyFourHrDelay %>%
+ group_by(GroupPerHr, CondPerHr) %>%
+summarise (means = mean(Change24hr),
+          stdevs = sd(Change24hr))
+
+#Analyze simulated data to obtain a p value
+
+sim_power <- function(x){
+  TDsleep <- rnorm(n = 25, mean=-0.1, sd = 0.2)
+  DSsleep <- rnorm(n = 25, mean=-0.5, sd = 0.2)
+  TDwake <- rnorm(n = 25, mean=-0.4, sd = 0.2)
+  DSwake <- rnorm(n = 25, mean=-0.2, sd = 0.2)
+  scores <- c(TDsleep, TDwake,DSsleep, DSwake )
+  cond<- rep(rep(c("SLEEP", "WAKE"), each = 25), 4)
+  gru<- rep(rep(c("TD", "DS"), each = 50), 2)
+  subs<-as.factor(rep(seq(1:50), 2))
+  DF<- data.frame(subs, scores, cond, gru)
+  novaresults<- summary(aov(scores~gru*cond + Error(subs/(cond)), DF) )
+  novaresults<-str(novaresults)
+  return(novaresults[[1]][["Pr(>F)"]][1])
+}
+
+sim_power(x)
+
+#Repeat and save p values 
+
+for (i in 1:100){
+  powersim <- c(sim_power(x))
+}
+
+
+
+#vector of effect sizes
+effect_sizes<- seq(.1, 2, .1)
+#run sim for each effect size 100 times 
+
+power <- sapply(effect_sizes,
+               FUN = function (x){
+                 sims <- replicate(1000, sim_power(x))
+                 sim_power <-  
+                   length(sims[sims<.05])/length(sims)
+                 return (sim_power)
+               })
+
+plot_df <- data.frame(effect_sizes, power)
 
 ```
 

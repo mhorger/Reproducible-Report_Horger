@@ -1,4 +1,4 @@
-\documentclass[man,floatsintext]{apa6}
+\documentclass[man]{apa6}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -94,6 +94,12 @@ Gomez\textsuperscript{1,3}}
 \newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
 
 
+\DeclareDelayedFloatFlavor{ThreePartTable}{table}
+\DeclareDelayedFloatFlavor{lltable}{table}
+\DeclareDelayedFloatFlavor*{longtable}{table}
+\makeatletter
+\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
+\makeatother
 \usepackage{lineno}
 
 \linenumbers
@@ -219,6 +225,63 @@ Condition 1 0.007 0.00686 0.049 0.825 Residuals 48 6.674 0.13904
 Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\
 \midrule
 Condition & 0.05 & 1 & 48 & 0.14 & .825 & .001\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
+
+Error: Subjects Df Sum Sq Mean Sq GroupPerHr 1 0.151 0.151
+
+Error: Subjects:CondPerHr Df Sum Sq Mean Sq CondPerHr 1 0.4689 0.4689
+
+Error: Within Df Sum Sq Mean Sq F value Pr(\textgreater{}F)\\
+GroupPerHr 1 0.164 0.1641 2.329 0.129\\
+CondPerHr 1 2.349 2.3488 33.348 3.10e-08 \textbf{\emph{
+GroupPerHr:CondPerHr 1 1.481 1.4813 21.032 8.18e-06 }} Residuals 190
+13.382 0.0704\\
+--- Signif. codes: 0 \enquote{\emph{\textbf{' 0.001 '}' 0.01 '}} 0.05
+\enquote{.} 0.1 \enquote{} 1
+
+Error: Subjects Df Sum Sq Mean Sq GroupPerHr 1 0.2538 0.2538
+
+Error: Subjects:CondPerHr Df Sum Sq Mean Sq CondPerHr 1 1.582 1.582
+
+Error: Within Df Sum Sq Mean Sq F value Pr(\textgreater{}F)\\
+GroupPerHr 1 0.594 0.594 8.552 0.00387 ** CondPerHr 1 5.653 5.653 81.333
+\textless{} 2e-16 \textbf{\emph{ GroupPerHr:CondPerHr 1 5.362 5.362
+77.155 9.23e-16 }} Residuals 190 13.205 0.069\\
+--- Signif. codes: 0 \enquote{\emph{\textbf{' 0.001 '}' 0.01 '}} 0.05
+\enquote{.} 0.1 \enquote{} 1
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:secondanova}ANOVA table for 4 hour delay}
+\begin{tabular}{lllllll}
+\toprule
+Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\
+\midrule
+GroupPerHr & 8.55 & 1 & 190 & 0.07 & .004 & .043\\
+CondPerHr & 81.33 & 1 & 190 & 0.07 & < .001 & .300\\
+GroupPerHr $\times$ CondPerHr & 77.15 & 1 & 190 & 0.07 & < .001 & .289\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:secondanova24}ANOVA table for 24 hour delay}
+\begin{tabular}{lllllll}
+\toprule
+Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\
+\midrule
+GroupPerHr & 2.33 & 1 & 190 & 0.07 & .129 & .012\\
+CondPerHr & 33.35 & 1 & 190 & 0.07 & < .001 & .149\\
+GroupPerHr $\times$ CondPerHr & 21.03 & 1 & 190 & 0.07 & < .001 & .100\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}

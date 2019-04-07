@@ -32,7 +32,7 @@ wordcount         : "X"
 
 bibliography      : ["r-references.bib"]
 
-floatsintext      : yes
+floatsintext      : no
 figurelist        : no
 tablelist         : no
 footnotelist      : no
@@ -218,6 +218,41 @@ apa_table(
 
 
 ```
+
+
+
+```{r, secondanova,  results="asis"}
+Change4hr <- ChangeinRec[1:98]
+Change24hr <- ChangeinRec[99:196]
+GroupPerHr <- Group[1:98]
+CondPerHr <- Condition[1:98]
+
+TwentyFourHrDelay<- data.frame(Subjects,GroupPerHr, CondPerHr, Change24hr)
+
+FourHrDelay <- data.frame(Subjects,GroupPerHr, CondPerHr, Change4hr)
+
+ANOVA24<- aov(Change24hr~GroupPerHr*CondPerHr + Error(Subjects/(CondPerHr)), TwentyFourHrDelay) 
+summary(ANOVA24)
+
+ANOVA4 <-  aov(Change4hr~GroupPerHr*CondPerHr + Error(Subjects/(CondPerHr)), FourHrDelay) 
+summary(ANOVA4)
+
+apa_anova4 <- apa_print(summary(ANOVA4))
+apa_table(
+  apa_anova4$table
+  , caption = "ANOVA table for 4 hour delay"
+)
+
+
+apa_anova24 <- apa_print(summary(ANOVA24))
+apa_table(
+  apa_anova24$table
+  , caption = "ANOVA table for 24 hour delay"
+)
+```
+
+
+
 
 # Discussion
 
