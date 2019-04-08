@@ -37,7 +37,7 @@ GroupPerHr $\times$ CondPerHr & 77.15 & 1 & 190 & 0.07 & < .001 & .289\\
 [tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:secondanova24}ANOVA table for 24 hour delay}
+\caption{\label{tab:secondanova}ANOVA table for 24 hour delay}
 \begin{tabular}{lllllll}
 \toprule
 Effect & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}_1$} & \multicolumn{1}{c}{$\mathit{df}_2$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$} & \multicolumn{1}{c}{$\hat{\eta}^2_G$}\\

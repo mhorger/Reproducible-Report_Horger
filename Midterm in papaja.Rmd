@@ -251,10 +251,74 @@ apa_table(
 )
 ```
 
+# SImulated power analysis
+
+```{r}
+#Power analysis
+
+#Set the properties of each sample including N, mean, SD, kind of distribution 
+
+meanSD <- TwentyFourHrDelay %>%
+ group_by(GroupPerHr, CondPerHr) %>%
+summarise (means = mean(Change24hr),
+          stdevs = sd(Change24hr))
+
+#Analyze simulated data to obtain a p value
+
+sim_power <- function(x){
+  TDsleep <- rnorm(n = 25, mean=-0.1, sd = 0.2)
+  DSsleep <- rnorm(n = 25, mean=-0.5, sd = 0.2)
+  TDwake <- rnorm(n = 25, mean=-0.4, sd = 0.2)
+  DSwake <- rnorm(n = 25, mean=-0.2, sd = 0.2)
+  scores <- c(TDsleep, TDwake,DSsleep, DSwake )
+  cond<- rep(rep(c("SLEEP", "WAKE"), each = 25), 4)
+  gru<- rep(rep(c("TD", "DS"), each = 50), 2)
+  subs<-as.factor(rep(seq(1:50), 2))
+  DF<- data.frame(subs, scores, cond, gru)
+  novaresults<- summary(aov(scores~gru*cond + Error(subs/(cond)), DF) )
+ # novaresults<-str(novaresults)
+  return(novaresults$`Error: Within`[[1]]$`Pr(>F)`[1])
+}
+
+
+
+
+#Repeat and save p values 
+
+for (i in 1:10000){
+  powersim[i] <- sim_power(i)
+}
+
+#vector of effect sizes
+effect_sizes<- seq(.1, 2, .1)
+
+
+#run sim for each effect size 100 times 
+
+power <- sapply(effect_sizes,
+        FUN = function (x){
+      sims <- replicate(1000, sim_power(x))
+      sim_power_anova <-  
+                   length(sims[sims<.05])/length(sims)
+                 return (sim_power_anova)
+               })
+
+plot_df <- data.frame(effect_sizes, power)
+
+#i'll plot the power
+library(ggplot2)
+
+ggplot(plot_df, aes (x=effect_sizes,
+                     y=power))+
+  geom_point()+
+  geom_line()
+```
 
 
 
 # Discussion
+This study challenges the assumption that sleep is beneficial for learning across populations. Contrary to the pattern displayed by typically developing children, children with Down Syndrome showed improved performance during the wake condition as compared to the sleep condition.  
+
 
 
 \newpage
