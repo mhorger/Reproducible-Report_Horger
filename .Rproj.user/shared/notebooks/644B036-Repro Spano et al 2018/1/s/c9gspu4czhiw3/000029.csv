@@ -1,5 +1,0 @@
-"0","     sim_power_anova <-  
-                   length(sims[sims<.05])/length(sims)
-"
-"2","Error: (list) object cannot be coerced to type 'double'
-"

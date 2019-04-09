@@ -228,12 +228,27 @@ sim_power <- function(x){
 }
 
 
+
+simple_sim <- function(x){
+  sleepers <- rnorm(n = 50, mean = -0.25, sd = 0.2)
+  wakers <- rnorm (n = 50, mean = -0.3, sd = 0.2)
+  simplescores <- c(sleepers, wakers)
+  simplecond <- rep(c("SLEEP", "WAKE"), each = 50)
+  simplesubs<-as.factor(seq(1:50))
+  simple<- data.frame(simplesubs, sleepers, wakers)
+  return(t.test(sleepers, wakers, var.equal = TRUE)$p.value)
+}
+
+
+
 #Repeat and save p values 
 
 for (i in 1:10000){
   powersim[i] <- sim_power(i)
 }
 
+
+#ignore the between sub factor. now it is a within sub design and use the total N . hold N constant (50)
 
 
 #vector of effect sizes
@@ -243,10 +258,10 @@ effect_sizes<- seq(.1, 2, .1)
 
 power <- sapply(effect_sizes,
         FUN = function (x){
-      sims <- replicate(1000, sim_power(x))
-      sim_power_anova <-  
+      sims <- replicate(10000, simple_sim(x))
+      sim_power_ttest <-  
                    length(sims[sims<.05])/length(sims)
-                 return (sim_power_anova)
+                 return (sim_power_ttest)
                })
 
 plot_df <- data.frame(effect_sizes, power)
