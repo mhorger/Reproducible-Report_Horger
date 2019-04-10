@@ -229,6 +229,9 @@ sim_power <- function(x){
 
 
 
+
+
+
 simple_sim <- function(x){
   sleepers <- rnorm(n = 50, mean = -0.25, sd = 0.2)
   wakers <- rnorm (n = 50, mean = -0.3, sd = 0.2)
@@ -243,8 +246,9 @@ simple_sim <- function(x){
 
 #Repeat and save p values 
 
-for (i in 1:10000){
-  powersim[i] <- sim_power(i)
+powersim<- c()
+for (i in 1:100){
+  powersim[i] <- simple_sim(i)
 }
 
 
@@ -255,14 +259,16 @@ for (i in 1:10000){
 effect_sizes<- seq(.1, 2, .1)
 
 #run sim for each effect size 100 times 
-
+sims<- 0
 power <- sapply(effect_sizes,
         FUN = function (x){
-      sims <- replicate(10000, simple_sim(x))
+      sims <- replicate(1000, simple_sim(x))
       sim_power_ttest <-  
                    length(sims[sims<.05])/length(sims)
                  return (sim_power_ttest)
                })
+
+print(power)
 
 plot_df <- data.frame(effect_sizes, power)
 
@@ -274,5 +280,23 @@ ggplot(plot_df, aes (x=effect_sizes,
   geom_point()+
   geom_line()
 
+```
+```{r}
+#try for number of subjects 
+
+num_subjects <- seq(10, 1000, 10)
+power <- sapply(num_subjects,
+                FUN = function (x){
+                  pwr.t.test(n=x, 
+                             d = .2,
+                             sig.level = .05,
+                          type = "two.sample", 
+                          alternative = "two.sided")$power})
+
+library(ggplot2)
+ggplot(plot_df, aes(x = num_subjects, 
+                    y = power))+
+  geom_point()+
+  geom_line()
 ```
 

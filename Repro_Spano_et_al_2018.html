@@ -348,6 +348,148 @@ ggplot(overall_means, aes(x=Timing,
                 width=.2,
                 color=&quot;black&quot;)+
   coord_cartesian(ylim=c(0.0, 2.5))</code></pre>
+<p>Set the properties of each sample including N, mean, SD, kind of distribution</p>
+<p>Round our sample up to N = 25 in each group Mean will be mean change in recognition at 24 hours Limit the first analysis to only those in the SLEEP condition</p>
+<p>meanTDWake = -0.36791667 sdTDWake = 0.2439040</p>
+<p>meanDSWake = -0.15120000 sdDSWake = 0.3158961</p>
+<p>meanTDSleep = -0.09083333 sdTDSleep = 0.2309447</p>
+<p>meanDSSleep = -0.46160000 sdDSSleep = 0.2580093</p>
+<p>normal distribution</p>
+<pre class="r"><code>#Power analysis
+
+#Set the properties of each sample including N, mean, SD, kind of distribution 
+
+meanSD &lt;- TwentyFourHrDelay %&gt;%
+ group_by(GroupPerHr, CondPerHr) %&gt;%
+summarise (means = mean(Change24hr),
+          stdevs = sd(Change24hr))
+
+#Analyze simulated data to obtain a p value
+
+sim_power &lt;- function(x){
+  TDsleep &lt;- rnorm(n = 25, mean=-0.1, sd = 0.2)
+  DSsleep &lt;- rnorm(n = 25, mean=-0.5, sd = 0.2)
+  TDwake &lt;- rnorm(n = 25, mean=-0.4, sd = 0.2)
+  DSwake &lt;- rnorm(n = 25, mean=-0.2, sd = 0.2)
+  scores &lt;- c(TDsleep, TDwake,DSsleep, DSwake )
+  cond&lt;- rep(rep(c(&quot;SLEEP&quot;, &quot;WAKE&quot;), each = 25), 4)
+  gru&lt;- rep(rep(c(&quot;TD&quot;, &quot;DS&quot;), each = 50), 2)
+  subs&lt;-as.factor(rep(seq(1:50), 2))
+  DF&lt;- data.frame(subs, scores, cond, gru)
+  novaresults&lt;- summary(aov(scores~gru*cond + Error(subs/(cond)), DF) )
+ # novaresults&lt;-str(novaresults)
+  return(novaresults$`Error: Within`[[1]]$`Pr(&gt;F)`[1])
+}
+
+
+#Repeat and save p values 
+
+for (i in 1:10000){
+  powersim[i] &lt;- sim_power(i)
+}
+
+
+
+#vector of effect sizes
+effect_sizes&lt;- seq(.1, 2, .1)
+
+#run sim for each effect size 100 times 
+
+power &lt;- sapply(effect_sizes,
+        FUN = function (x){
+      sims &lt;- replicate(10000, simple_sim(x))
+      sim_power_ttest &lt;-  
+                   length(sims[sims&lt;.05])/length(sims)
+                 return (sim_power_ttest)
+               })
+
+plot_df &lt;- data.frame(effect_sizes, power)
+
+#i'll plot the power
+library(ggplot2)
+
+ggplot(plot_df, aes (x=effect_sizes,
+                     y=power))+
+  geom_point()+
+  geom_line()</code></pre>
+<pre class="r"><code>#try a simpler version 
+#ignore the between sub factor. now it is a within sub design and use the total N . hold N constant (50)
+
+
+#new simulating function 
+simple_sim &lt;- function(x){
+  sleepers &lt;- rnorm(n = 50, mean = -0.25, sd = 0.2)
+  wakers &lt;- rnorm (n = 50, mean = -0.3, sd = 0.2)
+  simplescores &lt;- c(sleepers, wakers)
+  simplecond &lt;- rep(c(&quot;SLEEP&quot;, &quot;WAKE&quot;), each = 50)
+  simplesubs&lt;-as.factor(seq(1:50))
+  simple&lt;- data.frame(simplesubs, sleepers, wakers)
+  return(t.test(sleepers, wakers, var.equal = TRUE)$p.value)
+}
+
+
+#Repeat and save p values 
+
+superpowers &lt;- c()
+for (i in 1:10000){
+  superpowers[i] &lt;- simple_sim(i)
+}
+
+
+#vector of effect sizes
+effect_sizes&lt;- seq(.1, 2, .1)
+
+powder&lt;- sapply(effect_sizes, 
+          FUN = function(X){
+          simulatedval &lt;- replicate(1000, simple_sim(x)) })
+
+#the problem is that it keeps collapsing across all of the effect sizes instead of keeping them seperate. 
+
+simulatedpower &lt;- length(simulatedval[simulatedval&lt;.05])/length(simulatedval)
+
+                
+
+try3 &lt;- data.frame (effect_sizes, powder)
+
+ggplot(try3, aes(x = effect_sizes,
+                 y = powder)) +
+  geom_point() +
+  geom_line()</code></pre>
+<pre class="r"><code>#try again with pwr package and n=50
+
+library(pwr)
+effect_sizes&lt;- seq(.1, 2, .1)
+
+powerplay &lt;- sapply( effect_sizes,
+                     FUN = function(x){
+        pwr.t.test(n=50, 
+                   d = x, 
+                   sig.level = .05, 
+                   type = &quot;one.sample&quot;,                             alternative=&quot;two.sided&quot;)$power    })
+
+plotter &lt;- data.frame(effect_sizes, powerplay)
+
+library(ggplot2)
+ggplot(plotter, aes(x = effect_sizes, 
+                    y = powerplay))+
+  geom_point() +
+  geom_line()</code></pre>
+<pre class="r"><code>num_subjects &lt;- seq(10, 1000, 10)
+power &lt;- sapply(num_subjects,
+                FUN = function(x) {
+                  pwr.t.test(n = x, 
+                             d = .2,
+                             sig.level = .05,
+                             type = &quot;two.sample&quot;,
+                             alternative = &quot;two.sided&quot;)$power      })
+
+plotspot &lt;- data.frame(num_subjects, power)
+
+library (ggplot2)
+ggplot(plotspot, aes(x = num_subjects,
+                     y = power))+
+  geom_point() +
+  geom_line()</code></pre>
 </div>
 
 

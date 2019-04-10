@@ -1,0 +1,12 @@
+"0","#try for number of subjects "
+"0","num_subjects <- seq(10, 1000, 10)"
+"0","power <- sapply(num_subjects,"
+"0","                FUN = function (x){"
+"0","                  pwr.t.test(n=x, "
+"0","                             d = .2,"
+"0","                             sig.level = .05,"
+"0","                          type = ""two.sample"", "
+"0","                          alternative = ""two.sided"")$power})"
+"2","Error in pwr.t.test(n = x, d = 0.2, sig.level = 0.05, type = ""two.sample"",  : 
+  could not find function ""pwr.t.test""
+"

@@ -228,27 +228,12 @@ sim_power <- function(x){
 }
 
 
-
-simple_sim <- function(x){
-  sleepers <- rnorm(n = 50, mean = -0.25, sd = 0.2)
-  wakers <- rnorm (n = 50, mean = -0.3, sd = 0.2)
-  simplescores <- c(sleepers, wakers)
-  simplecond <- rep(c("SLEEP", "WAKE"), each = 50)
-  simplesubs<-as.factor(seq(1:50))
-  simple<- data.frame(simplesubs, sleepers, wakers)
-  return(t.test(sleepers, wakers, var.equal = TRUE)$p.value)
-}
-
-
-
 #Repeat and save p values 
 
 for (i in 1:10000){
   powersim[i] <- sim_power(i)
 }
 
-
-#ignore the between sub factor. now it is a within sub design and use the total N . hold N constant (50)
 
 
 #vector of effect sizes
@@ -274,5 +259,97 @@ ggplot(plot_df, aes (x=effect_sizes,
   geom_point()+
   geom_line()
 
+```
+
+
+
+```{r}
+#try a simpler version 
+#ignore the between sub factor. now it is a within sub design and use the total N . hold N constant (50)
+
+
+#new simulating function 
+simple_sim <- function(x){
+  sleepers <- rnorm(n = 50, mean = -0.25, sd = 0.2)
+  wakers <- rnorm (n = 50, mean = -0.3, sd = 0.2)
+  simplescores <- c(sleepers, wakers)
+  simplecond <- rep(c("SLEEP", "WAKE"), each = 50)
+  simplesubs<-as.factor(seq(1:50))
+  simple<- data.frame(simplesubs, sleepers, wakers)
+  return(t.test(sleepers, wakers, var.equal = TRUE)$p.value)
+}
+
+
+#Repeat and save p values 
+
+superpowers <- c()
+for (i in 1:10000){
+  superpowers[i] <- simple_sim(i)
+}
+
+
+#vector of effect sizes
+effect_sizes<- seq(.1, 2, .1)
+
+powder<- sapply(effect_sizes, 
+          FUN = function(X){
+          simulatedval <- replicate(1000, simple_sim(x)) })
+
+#the problem is that it keeps collapsing across all of the effect sizes instead of keeping them seperate. 
+
+simulatedpower <- length(simulatedval[simulatedval<.05])/length(simulatedval)
+
+                
+
+try3 <- data.frame (effect_sizes, powder)
+
+ggplot(try3, aes(x = effect_sizes,
+                 y = powder)) +
+  geom_point() +
+  geom_line()
+```
+
+
+
+
+```{r}
+#try again with pwr package and n=50
+
+library(pwr)
+effect_sizes<- seq(.1, 2, .1)
+
+powerplay <- sapply( effect_sizes,
+                     FUN = function(x){
+        pwr.t.test(n=50, 
+                   d = x, 
+                   sig.level = .05, 
+                   type = "one.sample",                             alternative="two.sided")$power    })
+
+plotter <- data.frame(effect_sizes, powerplay)
+
+library(ggplot2)
+ggplot(plotter, aes(x = effect_sizes, 
+                    y = powerplay))+
+  geom_point() +
+  geom_line()
+```
+
+```{r}
+num_subjects <- seq(10, 1000, 10)
+power <- sapply(num_subjects,
+                FUN = function(x) {
+                  pwr.t.test(n = x, 
+                             d = .2,
+                             sig.level = .05,
+                             type = "two.sample",
+                             alternative = "two.sided")$power      })
+
+plotspot <- data.frame(num_subjects, power)
+
+library (ggplot2)
+ggplot(plotspot, aes(x = num_subjects,
+                     y = power))+
+  geom_point() +
+  geom_line()
 ```
 

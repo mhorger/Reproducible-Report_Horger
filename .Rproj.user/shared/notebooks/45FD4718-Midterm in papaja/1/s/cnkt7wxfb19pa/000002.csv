@@ -1,0 +1,7 @@
+"0","Groups<- c( ""DS"", ""TD"")"
+"0","N <- c(25, 24)"
+"0","Mean_age <- c(9.49, 5.03)"
+"0","PercentFemale <- c(52, 54)"
+"0","demos<- data.frame(Groups, N, Mean_age, PercentFemale)"
+"0","library(xtable)"
+"0","knitr::kable(xtable(demos))"
