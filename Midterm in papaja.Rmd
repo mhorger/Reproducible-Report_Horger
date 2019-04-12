@@ -253,6 +253,75 @@ apa_table(
 
 
 
+```{r}
+#power analysis 
+#Set the properties of each sample including N, mean, SD, kind of distribution 
+
+meanSD <- TwentyFourHrDelay %>%
+ group_by(GroupPerHr, CondPerHr) %>%
+summarise (means = mean(Change24hr),
+          stdevs = sd(Change24hr))
+
+#Analyze simulated data to obtain a p value
+
+simple_sim <- function(x){
+  sleepers <- rnorm(n = 50, mean = -0.25, sd = 0.2)
+  wakers <- rnorm (n = 50, mean = -0.3, sd = 0.2)
+  simplescores <- c(sleepers, wakers)
+  simplecond <- rep(c("SLEEP", "WAKE"), each = 50)
+  simplesubs<-as.factor(seq(1:50))
+  simple<- data.frame(simplesubs, sleepers, wakers)
+  return(t.test(sleepers, wakers, var.equal = TRUE)$p.value)
+}
+
+
+
+#vector of effect sizes
+effect_sizes<- seq(.1, 2, .1)
+
+#run sim for each effect size 100 times 
+
+power <- sapply(effect_sizes,
+        FUN = function (x){
+      sims <- replicate(10000, simple_sim(x))
+      sim_power_ttest <-  
+                   length(sims[sims<.05])/length(sims)
+                 return (sim_power_ttest)
+               })
+
+plot_df <- data.frame(effect_sizes, power)
+
+#i'll plot the power
+library(ggplot2)
+
+ggplot(plot_df, aes (x=effect_sizes,
+                     y=power))+
+  geom_point()+
+  geom_line()
+
+
+
+
+#try again with pwr package and n=50
+
+library(pwr)
+effect_sizes<- seq(.1, 2, .1)
+
+powerplay <- sapply( effect_sizes,
+                     FUN = function(x){
+        pwr.t.test(n=50, 
+                   d = x, 
+                   sig.level = .05, 
+                   type = "one.sample",                             alternative="two.sided")$power    })
+
+plotter <- data.frame(effect_sizes, powerplay)
+
+library(ggplot2)
+ggplot(plotter, aes(x = effect_sizes, 
+                    y = powerplay))+
+  geom_point() +
+  geom_line()
+```
 
 
 

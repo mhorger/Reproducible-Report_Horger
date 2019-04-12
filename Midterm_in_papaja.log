@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.3.25)  9 APR 2019 17:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.3.25)  12 APR 2019 18:26
 entering extended mode
 **./Midterm_in_papaja.tex
 (Midterm_in_papaja.tex
@@ -1041,16 +1041,34 @@ File: Midterm_in_papaja_files/figure-latex/NumberToCriterion-1.pdf Graphic file
 Package pdftex.def Info: Midterm_in_papaja_files/figure-latex/NumberToCriterion
 -1.pdf  used on input line 12.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
+<Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-1.pdf, id=112, 469.755pt 
+x 325.215pt>
+File: Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (
+type pdf)
+<use Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-1
+.pdf  used on input line 20.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-2.pdf, id=113, 469.755pt 
+x 325.215pt>
+File: Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-2.pdf Graphic file (
+type pdf)
+<use Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-2.pdf>
+Package pdftex.def Info: Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-2
+.pdf  used on input line 27.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 342.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 358.
 [9
 
  <C:/Users/mhorger/Documents/GitHub/Reproducible-Report_Horger/methods.PNG>] [1
-0 <./Midterm_in_papaja_files/figure-latex/NumberToCriterion-1.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 342.
+0 <./Midterm_in_papaja_files/figure-latex/NumberToCriterion-1.pdf>] [11 <./Midt
+erm_in_papaja_files/figure-latex/unnamed-chunk-3-1.pdf>] [12 <./Midterm_in_papa
+ja_files/figure-latex/unnamed-chunk-3-2.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 358.
 (Midterm_in_papaja.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 342.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 342.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 358.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 358.
 Package rerunfilecheck Info: File `Midterm_in_papaja.out' has not changed.
 (rerunfilecheck)             Checksum: 9C8EA780F93FAB105C8B1167990D6019;1641.
 
@@ -1058,10 +1076,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15467 strings out of 492945
- 235063 string characters out of 3125364
+ 15479 strings out of 492945
+ 235669 string characters out of 3125364
  347900 words of memory out of 3000000
- 19028 multiletter control sequences out of 15000+200000
+ 19036 multiletter control sequences out of 15000+200000
  67032 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,12n,47p,853b,546s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1082,9 +1100,9 @@ r/AppData/Local/Programs/MiKTeX 2.9_2/fonts/type1/public/lm/lmr12.pfb><C:/Users
 m/lmss8.pfb><C:/Users/mhorger/AppData/Local/Programs/MiKTeX 2.9_2/fonts/type1/p
 ublic/lm/lmsy10.pfb><C:/Users/mhorger/AppData/Local/Programs/MiKTeX 2.9_2/fonts
 /type1/public/lm/lmtt12.pfb>
-Output written on Midterm_in_papaja.pdf (10 pages, 396910 bytes).
+Output written on Midterm_in_papaja.pdf (12 pages, 409996 bytes).
 PDF statistics:
- 178 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
- 8275 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 203 PDF objects out of 1000 (max. 8388607)
+ 40 named destinations out of 1000 (max. 500000)
+ 8285 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -13,3 +13,17 @@
 \caption{\label{fig:NumberToCriterion}Average number of trials to criterion
 per group per condition.}
 \end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{Midterm_in_papaja_files/figure-latex/unnamed-chunk-3-2.pdf}
+\caption{}
+\end{figure*}
